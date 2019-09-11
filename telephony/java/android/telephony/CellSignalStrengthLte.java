@@ -220,6 +220,12 @@ public final class CellSignalStrengthLte extends CellSignalStrength implements P
                 + rsrpIconLevel + " snrIconLevel:" + snrIconLevel
                 + " lteRsrpBoost:" + sRsrpBoost);
 
+            // Ignore RSSNR
+            if (rsrpIconLevel != -1) {
+                mLevel = rsrpIconLevel;
+                return;
+            }
+
         /* Choose a measurement type to use for notification */
         if (snrIconLevel != -1 && rsrpIconLevel != -1) {
             /*
