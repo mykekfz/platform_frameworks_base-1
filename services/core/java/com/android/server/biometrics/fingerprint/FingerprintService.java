@@ -588,7 +588,15 @@ public class FingerprintService extends BiometricServiceBase {
                 final Fingerprint fingerprint =
                         new Fingerprint(getBiometricUtils().getUniqueName(getContext(), groupId),
                                 groupId, fingerId, deviceId);
-                FingerprintService.super.handleEnrollResult(fingerprint, remaining);
+
+                int remaining2 = remaining;
+                int overrideSamsung = android.os.SystemProperties.getInt("persist.sys.phh.samsung_fingerprint", -1);
+
+                String fp = android.os.SystemProperties.get("ro.vendor.build.fingerprint");
+                if(overrideSamsung == 1 || (overrideSamsung != 0 && fp != null && fp.startsWith("samsung/")))
+                    remaining2 = 100 - remaining2;
+
+                FingerprintService.super.handleEnrollResult(fingerprint, remaining2);
             });
         }
 
